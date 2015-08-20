@@ -31,6 +31,7 @@ import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 
 
 /**
+ * 添加了对ThreadLocal的清理代码
  * <p>Example filter that sets the character encoding to be used in parsing the
  * incoming request, either unconditionally or only if the client did not
  * specify a character encoding.  Configuration of this filter is based on
