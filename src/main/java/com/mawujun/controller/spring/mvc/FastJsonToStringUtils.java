@@ -72,7 +72,12 @@ public class FastJsonToStringUtils {
 			return jsonString;
 		}
 	}
-	
+	/**
+	 * 把查询结果使用jsonp进行封装
+	 * @author mawujun email:160649888@163.com qq:16064988
+	 * @param jsonString
+	 * @return
+	 */
 	public static String wrapJsonp(String jsonString){
 		if(JsonConfigHolder.getJsonp()){
 			jsonString=JsonConfigHolder.getJsonpCallback()+"("+jsonString+")";

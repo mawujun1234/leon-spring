@@ -71,6 +71,8 @@ public class SetCharacterEncodingFilter implements Filter {
      * this filter.
      */
     protected String encoding = null;
+    
+    protected String callback = "callback";
 
 
     /**
@@ -124,10 +126,16 @@ public class SetCharacterEncodingFilter implements Filter {
                 response.setCharacterEncoding(encoding);
             }
         }
+        //判断是不是jsonp，以jquery的格式为demo
+        if(request.getParameter(callback)!=null && !"".equals(request.getParameter(callback).trim())){
+        	//设置jsonp的函数名称
+        	JsonConfigHolder.setJsonpCallback(request.getParameter(callback));
+        }
 
 	// Pass control on to the next filter
         chain.doFilter(request, response);
 
+        //取消掉ThreadLocal中的数据
         JsonConfigHolder.remove();
     }
 

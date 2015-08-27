@@ -29,6 +29,7 @@ import com.alibaba.fastjson.serializer.SimpleDateFormatSerializer;
 import com.mawujun.controller.spring.mvc.json.JsonConfigHolder;
 
 /**
+ * 以@RequestBody @ResponseBody进行定义的时候
  * 在接收的时候，重载了
  * 在返回响应内容的时候，如果返回的不是JSONObject货JSONArray就调用原来的方法
  * @author mawujun
@@ -87,7 +88,7 @@ public class MappingFastJson2HttpMessageConverter extends AbstractHttpMessageCon
 	@Override
 	protected Object readInternal(Class<? extends Object> clazz, HttpInputMessage inputMessage) throws IOException, HttpMessageNotReadableException {
 		InputStream bin=inputMessage.getBody();
-
+		
 		BufferedReader in = new BufferedReader(new InputStreamReader(bin));
 		String strFileContents = FileCopyUtils.copyToString(in);
 		if (strFileContents.length() == 0) {
@@ -234,6 +235,7 @@ public class MappingFastJson2HttpMessageConverter extends AbstractHttpMessageCon
 //		String jsonString=serializer.toString();
 //		jsonString=replaceJsonPath(jsonString);
 		
+			
 		FileCopyUtils.copy( FastJsonToStringUtils.getJsonString(object), new OutputStreamWriter(outputMessage.getBody(), charset));
 		
 		}catch(RuntimeException e){
