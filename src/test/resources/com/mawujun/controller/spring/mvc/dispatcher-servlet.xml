@@ -53,14 +53,14 @@
 		<property name="messageConverters">
 			<list>
 				<bean id="stringHttpMessageConverter"
-					class="com.mawujun.controller.spring.mvc.StringHttpMessageConverterImpl">
+					class="com.mawujun.controller.spring.mvc.fastjson.StringHttpMessageConverterImpl">
 					<constructor-arg value="UTF-8">
 						
 					</constructor-arg>
 					<property name="writeAcceptCharset" value="true" />
 				</bean>
 				<bean id="jsonHttpMessageConverter"
-					class="com.mawujun.controller.spring.mvc.MappingFastJson2HttpMessageConverter" /><!-- 在循环引用和属性过滤上设置更方便 -->
+					class="com.mawujun.controller.spring.mvc.fastjson.MappingFastJson2HttpMessageConverter" /><!-- 在循环引用和属性过滤上设置更方便 -->
 				<bean id="byteArrayHttpMessageConverter"
 					class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
 				<bean id="xmlAwareFormHttpMessageConverter"
@@ -112,7 +112,7 @@
       <!-- 根据MediaType进行返回视图的选择 -->
 	  <property name="defaultViews">
 		<list>
-		    <bean id="jsonView" class="com.mawujun.controller.spring.mvc.MappingFastjson2JsonView">
+		    <bean id="jsonView" class="com.mawujun.controller.spring.mvc.fastjson.MappingFastjson2JsonView">
 			</bean>
 			<!-- 
             <bean class="org.springframework.web.servlet.view.xml.MarshallingView" >  
