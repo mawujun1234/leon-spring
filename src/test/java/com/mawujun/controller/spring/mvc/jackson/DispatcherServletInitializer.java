@@ -36,14 +36,14 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
 
 	@Override
 	protected Class<?>[] getServletConfigClasses() {
-		return new Class<?>[] { WebConfig.class };
+		return new Class<?>[] { MvcConfig.class };
 	}
 
 	@Override
 	protected String[] getServletMappings() {
 		//System.out.println("-------------------------");
 		//return new String[] { "/" };
-		return new String[] { "/","*.do" };
+		return new String[] {"*.do" };
 	}
 	
 	@Override

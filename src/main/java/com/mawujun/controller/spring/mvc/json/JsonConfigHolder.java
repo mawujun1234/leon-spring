@@ -20,8 +20,7 @@ public class JsonConfigHolder {
 	
 	protected static ThreadLocal<ToJsonConfig> threadLocal = new ThreadLocal<ToJsonConfig>(){
 		protected ToJsonConfig initialValue() {
-			return new ToJsonConfig();
-			
+			return new ToJsonConfig();	
 		}
 	};
 
