@@ -6,6 +6,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -60,6 +62,32 @@ public class JacksonController {
 		
 	}
 	
+	@RequestMapping("/jackson/stringreturn.do")
+	public String stringreturn(Integer id,String name,@DateTimeFormat(iso=ISO.DATE)Date createDate,Date otherDate){
+		Jackson jackson=new Jackson();
+		jackson.setId(id);
+		jackson.setName(name);
+		jackson.setCreateDate(createDate);
+		jackson.setOtherDate(otherDate);
+		return "success";
+		
+	}
+	
+	@RequestMapping("/jackson/extenProp.do")
+	public String extenProp(Integer id,String name,@DateTimeFormat(iso=ISO.DATE)Date createDate,Date otherDate,Model model){
+		Jackson jackson=new Jackson();
+		jackson.setId(id);
+		jackson.setName(name);
+		jackson.setCreateDate(createDate);
+		jackson.setOtherDate(otherDate);
+		
+		model.addAttribute("extenProp", 1);
+		model.addAttribute("jackson", jackson);
+		return "success";
+		
+	}
+
+	
 	
 	@RequestMapping("/jackson/exception.do")
 	public void exception() throws Exception{
@@ -109,4 +137,34 @@ public class JacksonController {
 		throw new Exception();
 		
 	}
+	
+	@RequestMapping("/jackson/message_extenProp.do")
+	@ResponseBody
+	public String message_extenProp(Integer id,String name,@DateTimeFormat(iso=ISO.DATE)Date createDate,Date otherDate,Model model){
+		Jackson jackson=new Jackson();
+		jackson.setId(id);
+		jackson.setName(name);
+		jackson.setCreateDate(createDate);
+		jackson.setOtherDate(otherDate);
+		
+		model.addAttribute("extenProp", 1);
+		return "success";
+		
+	}
+	
+	@RequestMapping("/jackson/message_extenProp1.do")
+	@ResponseBody
+	public Model message_extenProp1(Integer id,String name,@DateTimeFormat(iso=ISO.DATE)Date createDate,Date otherDate,Model model){
+		Jackson jackson=new Jackson();
+		jackson.setId(id);
+		jackson.setName(name);
+		jackson.setCreateDate(createDate);
+		jackson.setOtherDate(otherDate);
+		
+		model.addAttribute("extenProp", 1);
+		model.addAttribute("jackson", jackson);
+		return model;
+		
+	}
+	
 }

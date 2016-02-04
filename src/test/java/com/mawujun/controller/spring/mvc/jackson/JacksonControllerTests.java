@@ -90,6 +90,62 @@ public class JacksonControllerTests {
             .andExpect(content().string("{ }"));
     }
     
+    @Test
+    public void stringreturn() throws Exception {
+    	this.mockMvc.perform(get("/jackson/stringreturn.do").accept(MediaType.parseMediaType("application/json;charset=UTF-8"))
+        		.param("id", "1").param("name", "11").param("createDate", "2015-02-02").param("otherDate", "2015-02-01 12:12:12")
+        	)
+            .andExpect(status().isOk())
+            .andExpect(content().contentType("application/json;charset=UTF-8"))
+            .andExpect(view().name("success"));
+    }
+    
+    @Test
+    public void extenProp() throws Exception {
+    	this.mockMvc.perform(get("/jackson/extenProp.do").accept(MediaType.parseMediaType("application/json;charset=UTF-8"))
+        		.param("id", "1").param("name", "11").param("createDate", "2015-02-02").param("otherDate", "2015-02-01 12:12:12")
+        	)
+            .andExpect(status().isOk())
+            .andExpect(content().contentType("application/json;charset=UTF-8"))
+            .andExpect(view().name("success"))
+            .andExpect(jsonPath("$.extenProp").value(1))
+            .andExpect(jsonPath("$.jackson.name").value("11"))
+            .andExpect(jsonPath("$.jackson.id").value(1))
+            .andExpect(jsonPath("$.jackson.createDate").value("2015-02-02"))
+            .andExpect(jsonPath("$.jackson.otherDate").value("2015-02-01 12:12:12"));
+
+    }
+    
+
+    
+    @Test
+    public void message_extenProp() throws Exception {
+    	this.mockMvc.perform(get("/jackson/message_extenProp.do").accept(MediaType.parseMediaType("application/json;charset=UTF-8"))
+        		.param("id", "1").param("name", "11").param("createDate", "2015-02-02").param("otherDate", "2015-02-01 12:12:12")
+        	)
+            .andExpect(status().isOk())
+            .andExpect(content().contentType("application/json;charset=UTF-8"))
+            .andExpect(content().string("\"success\""))
+            .andExpect(jsonPath("$.extenProp").doesNotExist());
+
+    }
+    
+    @Test
+    public void message_extenProp1() throws Exception {
+    	this.mockMvc.perform(get("/jackson/message_extenProp1.do").accept(MediaType.parseMediaType("application/json;charset=UTF-8"))
+        		.param("id", "1").param("name", "11").param("createDate", "2015-02-02").param("otherDate", "2015-02-01 12:12:12")
+        	)
+            .andExpect(status().isOk())
+            .andExpect(content().contentType("application/json;charset=UTF-8"))
+            .andExpect(jsonPath("$.extenProp").value(1))
+            .andExpect(jsonPath("$.jackson.name").value("11"))
+            .andExpect(jsonPath("$.jackson.id").value(1))
+            .andExpect(jsonPath("$.jackson.createDate").value("2015-02-02"))
+            .andExpect(jsonPath("$.jackson.otherDate").value("2015-02-01 12:12:12"));
+
+    }
+    
+    
     //测试异常信息没有指定的时候，即使用默认异常
     @Test
     public void exception() throws Exception {
@@ -208,5 +264,6 @@ public class JacksonControllerTests {
           .andExpect(jsonPath("$.exception").exists())
           .andExpect(jsonPath("$.errorMsg").value("系统发生异常"));
   }
+
 
 }
