@@ -94,6 +94,16 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
         simpleMappingExceptionResolver.setWarnLogCategory("WARN");
         //simpleMappingExceptionResolver.setExceptionAttribute("exception"); //默认就是exception 属性名称
         
+//      properties.setProperty(ConversionNotSupportedException.class.getName(), viewname);//500 (Internal Server Error)
+//      properties.setProperty(HttpMediaTypeNotAcceptableException.class.getName(), viewname);//406 (Not Acceptable) 
+//      properties.setProperty(HttpMediaTypeNotSupportedException.class.getName(), viewname);//415 (Unsupported Media Type)  
+//      properties.setProperty(HttpMessageNotReadableException.class.getName(), viewname);//400 (Bad Request)
+//      properties.setProperty(HttpMessageNotWritableException.class.getName(), viewname);//500 (Internal Server Error)  
+//      properties.setProperty(HttpRequestMethodNotSupportedException.class.getName(), viewname);//405 (Method Not Allowed)  
+//      properties.setProperty(MissingServletRequestParameterException.class.getName(), viewname);//400 (Bad Request)
+//      properties.setProperty(NoSuchRequestHandlingMethodException.class.getName(), viewname);//404 (Not Found) 
+//      properties.setProperty(TypeMismatchException.class.getName(), viewname);//400 (Bad Request)  
+        
         Properties properties = new Properties();  
         
         //指定什么异常返回什么界面，后面只要逐步加进去就可以了

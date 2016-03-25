@@ -15,7 +15,7 @@ import com.mawujun.exception.BusinessException;
 public class MappingExceptionResolver extends SimpleMappingExceptionResolver {
 	
 	private String errorMsgAttribute = "errorMsg";//异常消息的属性名称，可以自定义,也就是对异常进行文字化描述，而不是其他信息
-	private String defaultErrorMsg="系统发生异常，请稍候重试!";
+	private String defaultErrorMsg="操作失败，请稍候重试!如果多次操作无效,请联系管理员!";
 	private Map<String, String> errorMsgs = new HashMap<String, String>();
 	
 	public void setErrorMsgs(Properties errorMsgs) {
