@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
@@ -16,22 +14,25 @@ public class MappingExceptionResolver extends SimpleMappingExceptionResolver {
 	
 	private String errorMsgAttribute = "errorMsg";//异常消息的属性名称，可以自定义,也就是对异常进行文字化描述，而不是其他信息
 	private String defaultErrorMsg="操作失败，请稍候重试!如果多次操作无效,请联系管理员!";
-	private Map<String, String> errorMsgs = new HashMap<String, String>();
+	/**
+	 * key是viewname，value是错误消息
+	 */
+	private Map<Class<? extends Exception>, String> errorMsgs = new HashMap<Class<? extends Exception>, String>();
 	
-	public void setErrorMsgs(Properties errorMsgs) {
-		for (Enumeration<?> enumeration = errorMsgs.propertyNames(); enumeration.hasMoreElements();) {
-			String viewName = (String) enumeration.nextElement();
-			String errorMsg = errorMsgs.getProperty(viewName);
-			this.errorMsgs.put(viewName, errorMsg);
-		}
-	}
+//	public void setErrorMsgs(Properties errorMsgs) {
+//		for (Enumeration<?> enumeration = errorMsgs.propertyNames(); enumeration.hasMoreElements();) {
+//			String viewName = (String) enumeration.nextElement();
+//			String errorMsg = errorMsgs.getProperty(viewName);
+//			this.errorMsgs.put(viewName, errorMsg);
+//		}
+//	}
 
 	/**
 	 * 设置对应的viewname中的异常信息
 	 * 
 	 */
-	public void addErrorMsg(String viewName, String errorMsg) {
-		this.errorMsgs.put(viewName, errorMsg);
+	public void addErrorMsg(Class<? extends Exception> exception, String errorMsg) {
+		this.errorMsgs.put(exception, errorMsg);
 	}
 	/**
 	 * 返回默认的错误消息
@@ -43,13 +44,23 @@ public class MappingExceptionResolver extends SimpleMappingExceptionResolver {
 	protected String determineErrorMsg( String viewName, Exception ex) {
 		if(ex instanceof BusinessException){
 			return ((BusinessException)ex).getMessage();
-		} else if (this.errorMsgs.containsKey(viewName)) {
-			return this.errorMsgs.get(viewName);
+		} else if (this.errorMsgs.containsKey(ex.getClass())) {
+			return this.errorMsgs.get(ex.getClass());
 		} else if(ex.getMessage()!=null && !"".equals(ex.getMessage())){
 			return ex.getMessage();
 		} 
 		//只有在ExceptionMappings没有定义过的时候才会走到这里
 		return this.defaultErrorMsg;
+		
+//		if(ex instanceof BusinessException){
+//			return ((BusinessException)ex).getMessage();
+//		} else if (this.errorMsgs.containsKey(viewName)) {
+//			return this.errorMsgs.get(viewName);
+//		} else if(ex.getMessage()!=null && !"".equals(ex.getMessage())){
+//			return ex.getMessage();
+//		} 
+//		//只有在ExceptionMappings没有定义过的时候才会走到这里
+//		return this.defaultErrorMsg;
 	}
 	
 	@Override

@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Properties;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Controller;
@@ -105,13 +107,32 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 //      properties.setProperty(TypeMismatchException.class.getName(), viewname);//400 (Bad Request)  
         
         Properties properties = new Properties();  
+
+        String  viewname="400_error";
+        properties.setProperty(HttpMessageNotReadableException.class.getName(), viewname);
+        simpleMappingExceptionResolver.addStatusCode(viewname, 400);
+        simpleMappingExceptionResolver.addErrorMsg(HttpMessageNotReadableException.class, "请求参数有问题，请检查输入的数据!");
         
-        //指定什么异常返回什么界面，后面只要逐步加进去就可以了
-        String viewname="common_error";
-        properties.setProperty(Exception.class.getName(), viewname);//指定异常和jsp页面的对应关系  
-        simpleMappingExceptionResolver.addStatusCode(viewname, 503);//指定返回页面的时候，返回的错误状态码
-        simpleMappingExceptionResolver.addErrorMsg(viewname, "系统发生异常");
-        simpleMappingExceptionResolver.setExceptionMappings(properties);  
+//        viewname="404_error";
+//        simpleMappingExceptionResolver.addStatusCode(viewname, 404);
+//        simpleMappingExceptionResolver.addErrorMsg(viewname, "找不到指定页面"); 
+        
+        viewname="common_error";
+        properties.setProperty(ConstraintViolationException.class.getName(), viewname);
+        simpleMappingExceptionResolver.addStatusCode(viewname, 503);
+        simpleMappingExceptionResolver.addErrorMsg(ConstraintViolationException.class, "违反数据库约束，某些数据可能重复了");
+        
+        viewname="common_error";
+        properties.setProperty(IllegalArgumentException.class.getName(), viewname);
+        simpleMappingExceptionResolver.addStatusCode(viewname, 503);
+        simpleMappingExceptionResolver.addErrorMsg(IllegalArgumentException.class, "非法的参数，请注意!");
+        
+        viewname="common_error";
+        properties.setProperty(Exception.class.getName(), viewname);
+        simpleMappingExceptionResolver.addStatusCode(viewname, 503);
+        simpleMappingExceptionResolver.addErrorMsg(Exception.class, "系统发生异常");
+        
+        simpleMappingExceptionResolver.setExceptionMappings(properties); 
 
         return simpleMappingExceptionResolver;  
     }  
